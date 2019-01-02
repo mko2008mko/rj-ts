@@ -3,8 +3,8 @@ import logoImg from '../../statics/logo.png';
 import { CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { searchFocus, searchBlur, getList, mouseInChange, mouseOutChange, changPage } from './store/head.redux';
-// import { Link } from 'react-router-dom';
-// import { logOut } from "../../pages/login/store/login.redux";
+import { Link } from 'react-router-dom';
+import { logOut } from '../../pages/login/store/login.redux';
 import RotateChange from '../rotatechange';
 
 import './style.less';
@@ -21,6 +21,8 @@ export interface Props {
   mouseInChange: () => void;
   mouseOutChange: () => void;
   searchBlur: () => void;
+  isLogin: boolean;
+  logOut: () => void;
 }
 
 class Header extends React.Component<Props, {}> {
@@ -77,7 +79,7 @@ class Header extends React.Component<Props, {}> {
 
   public render() {
     // console.log(this.props.list)
-    const { focused, mouseInChange, mouseOutChange, list } = this.props;
+    const { focused, mouseInChange, mouseOutChange, list, isLogin, logOut } = this.props;
     return (
       <header>
         <a className="logo" href="/">
@@ -101,7 +103,7 @@ class Header extends React.Component<Props, {}> {
                   <input
                     placeholder="搜索"
                     className={focused ? 'focused' : ''}
-                    onFocus={this.handleFocus.bind(this,list)}
+                    onFocus={this.handleFocus.bind(this, list)}
                     onBlur={this.props.searchBlur}
                   />
                 </CSSTransition>
@@ -130,20 +132,20 @@ class Header extends React.Component<Props, {}> {
             <div>
               <i className="iconfont">&#xe636;</i>
             </div>
-            {/* {isLogin ? (
+            {isLogin ? (
               <div onClick={logOut}>退出</div>
             ) : (
               <Link to={`/login`}>
                 <div>登录</div>
               </Link>
-            )} */}
+            )}
           </div>
         </div>
         <div className="addition">
           {/* <Link to={`/writer`}> */}
-            <div className="rb writting">
-              <i className="iconfont">&#xe615;</i>写文章
-            </div>
+          <div className="rb writting">
+            <i className="iconfont">&#xe615;</i>写文章
+          </div>
           {/* </Link> */}
           <div className="rb reg">注册</div>
         </div>
@@ -153,7 +155,7 @@ class Header extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any):any => {
+const mapStateToProps = (state: any): any => {
   // console.log(state.getIn(['headersReducer', 'list']));
   return {
     // focused: state.headersReducer.focused
@@ -166,8 +168,8 @@ const mapStateToProps = (state: any):any => {
     focused: state.headerReducer.focused,
     list: state.headerReducer.list,
     page: state.headerReducer.page,
-    mouseIn: state.headerReducer.mouseIn
-    // isLogin: state.getIn(['loginReducer', 'isLogin'])
+    mouseIn: state.headerReducer.mouseIn,
+    isLogin: state.loginReducer.isLogin
   };
 };
 
@@ -190,6 +192,9 @@ const mapDispathToProps = (dispatch: any): any => {
     },
     mouseOutChange() {
       dispatch(mouseOutChange());
+    },
+    logOut(){
+      dispatch(logOut());
     }
   };
   // searchFocus,

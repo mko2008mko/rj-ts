@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { getHomeDate, backTopIsShow } from './store/home.redux';
 import List from './components/list';
 import TopicComp from './components/topic';
+import RecommendComp from './components/recommend';
+import Writer from './components/writer';
+import AppDownload from './components/appdownload';
 import './style.less';
 
 interface HomeProps {
@@ -53,9 +56,14 @@ class Home extends React.Component<HomeProps> {
             <TopicComp />
             <List />
           </div>
-          <div className="home-right">{/* <Recommend />
+          <div className="home-right">
+            <RecommendComp />
+            <AppDownload/>
+            <Writer/>
+            {/* <Recommend />
             <AppDownload />
-            <Writer /> */}</div>
+            <Writer /> */}
+          </div>
           {this.props.isShow ? (
             <div className="back-top" onClick={this.handleScroll}>
               回到顶部
