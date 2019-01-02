@@ -1,8 +1,8 @@
-
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 const UPDATE_REDIRECT = 'UPDATE_REDIRECT';
 export const GET_LOGIN = 'GET_LOGIN';
+const GET_LOGIN_FAILD = 'GET_LOGIN_FAILD';
 
 interface LoginState {
   isLogin: boolean;
@@ -29,9 +29,17 @@ export const loginReducer = (state: LoginState = { isLogin: false, redirectTo: '
       return { ...state, isLogin: false };
     case UPDATE_REDIRECT:
       return { ...state, redirectTo: action.path };
+    case GET_LOGIN_FAILD:
+      return { ...state, isLogin: false };
     default:
       return state;
   }
+};
+
+export const loginFailed = () => {
+  return {
+    type: GET_LOGIN_FAILD
+  };
 };
 
 export const loginSuccess = () => {
@@ -46,19 +54,6 @@ export const login = (act: string, pwd: string) => {
     act: act,
     pwd: pwd
   };
-  // return (dispatch: any) => {
-  //   axios
-  //     .get(`/api/login.json?act=${act}&pwd=${pwd}`)
-  //     // axios.get(`/api/login.json`)
-  //     .then(res => {
-  //       if (res.data.success) {
-  //         dispatch(loginSuccess());
-  //       }
-  //     })
-  //     .catch(() => {
-  //       // console.log('error')
-  //     });
-  // };
 };
 
 export const logOut = () => {

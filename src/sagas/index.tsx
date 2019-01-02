@@ -3,12 +3,19 @@ import axios from 'axios';
 import { GET_MORE_LIST, getMoreListSuccess, getHomeDataSuccess, GET_HOME_DATA } from '../pages/home/store/home.redux';
 import { GET_SEARCH_KEYWORD_LIST, getListSuccess } from '../components/head/store/head.redux';
 import { GET_DETAIL_DATA, getDetailSuccess } from '../pages/detail/store/detail.redux';
-import { GET_LOGIN, loginSuccess } from '../pages/login/store/login.redux';
+import { GET_LOGIN, loginSuccess, loginFailed } from '../pages/login/store/login.redux';
+import watchRequestRWriter from './rwriter';
 
 function* requestLogin(action: any) {
-  const res = yield axios.get(`/api/login.json?act=${action.act}&pwd=${action.pwd}`);
-  if (res.data.success) {
-    yield put(loginSuccess());
+  try {
+    const res = yield axios.get(`/api/login.json?act=${action.act}&pwd=${action.pwd}`);
+    if (res.data.success) {
+      yield put(loginSuccess());
+    } else {
+      yield put(loginFailed());
+    }
+  } catch (error) {
+    yield put(loginFailed());
   }
 }
 
@@ -62,6 +69,7 @@ export default function* rootSage() {
     watchRequestHomeData(),
     watchREquestSKWData(),
     watchRequestDetailData(),
-    watchRequestLogin()
+    watchRequestLogin(),
+    watchRequestRWriter()
   ]);
 }
